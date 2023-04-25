@@ -3,7 +3,7 @@ const posts = {
     {
       cover:
         "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_1.jpg",
-      title: "Apply These 7 Secret Techniques To Improve Event",
+      title: "apply-these-7-secret-techniques-to-improve-event",
       description: "Assumenda nam repudiandae rerum fugiat vel maxime.",
       createdAt: "2023-04-25T07:27:36.411Z",
       view: 6275,
@@ -37,7 +37,7 @@ const posts = {
     {
       cover:
         "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_2.jpg",
-      title: "Believing These 7 Myths About Event Keeps You From Growing",
+      title: "believing-these-7-myths-about-event-keeps-you-from-growing",
       description: "Quis veniam aut saepe aliquid nulla.",
       createdAt: "2023-04-24T06:27:36.411Z",
       view: 1151,
@@ -70,7 +70,7 @@ const posts = {
     {
       cover:
         "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_3.jpg",
-      title: "Don't Waste Time! 7 Facts Until You Reach Your Event",
+      title: "don-t-waste-time-7-facts-until-you-reach-your-event",
       description: "Reprehenderit ut voluptas sapiente ratione nostrum est.",
       createdAt: "2023-04-23T05:27:36.411Z",
       view: 1817,
@@ -103,7 +103,7 @@ const posts = {
     {
       cover:
         "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_4.jpg",
-      title: "How 7 Things Will Change The Way You Approach Event",
+      title: "how-7-things-will-change-the-way-you-approach-event",
       description: "Error ut sit vel molestias velit.",
       createdAt: "2023-04-22T04:27:36.411Z",
       view: 8295,

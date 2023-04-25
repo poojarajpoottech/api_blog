@@ -9,6 +9,8 @@ const app = express();
 // const data = require("./utils/data");
 // const Postschema = require("./model/postschema");
 // const posts = require("./utils/posts");
+// const RecentPostSchema = require("./model/recentpostschema");
+// const recentpost = require("./utils/recentpost");
 
 app.use(cookieParser());
 dotenv.config({ path: "./config.env" });
@@ -27,8 +29,10 @@ app.use(cors(corsOptions));
 //   try {
 //     // await User.deleteMany();
 //     // await User.insertMany(data.users);
-//     await Postschema.deleteMany();
-//     await Postschema.insertMany(posts.posts);
+//     // await Postschema.deleteMany();
+//     // await Postschema.insertMany(posts.posts);
+//     await RecentPostSchema.deleteMany();
+//     await RecentPostSchema.insertMany(recentpost.post);
 //     console.log("Data seeded successfully");
 //   } catch (error) {
 //     console.log(error);

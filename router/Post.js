@@ -7,6 +7,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //db connection
 require("../db/conn");
 const Post = require("../model/postschema");
+const RecentPost = require("../model/recentpostschema");
 
 //pagination
 router.get("/api/blog/posts", (req, res) => {
@@ -26,11 +27,25 @@ router.get("/api/blog/posts", (req, res) => {
     });
 });
 
-router.get(`/api/blog/post`, async (req, res) => {
+router.get("/api/blog/post", async (req, res) => {
   try {
     const { title } = req.query;
-    console.log(title);
     const post = await Post.findOne({ title });
+    if (post) {
+      res.json(post);
+    } else {
+      res.status(404).json({ message: "Post not found" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//recent post
+router.get("/api/blog/posts/recent", async (req, res) => {
+  try {
+    const { title } = req.query;
+    const post = await RecentPost.findOne({ title });
     if (post) {
       res.json(post);
     } else {
