@@ -44,10 +44,10 @@ router.get("/api/blog/post", async (req, res) => {
 //recent post
 router.get("/api/blog/posts/recent", async (req, res) => {
   try {
-    const { title } = req.query;
-    const post = await RecentPost.findOne({ title });
-    if (post) {
-      res.json(post);
+    // const { title } = req.query;
+    const recentpost = await RecentPost.find().sort({ createdAt: -1 }).limit(2);
+    if (recentpost) {
+      res.json(recentpost);
     } else {
       res.status(404).json({ message: "Post not found" });
     }
