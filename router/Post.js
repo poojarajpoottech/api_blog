@@ -13,7 +13,6 @@ router.get("/api/blog/posts", (req, res) => {
   const page = req.query.page || 1;
   const perPage = req.query.perPage || 6;
   Post.find()
-    .populate("author", ["name"])
     .sort({ createdAt: -1 })
     .skip((page - 1) * perPage)
     .limit(perPage)

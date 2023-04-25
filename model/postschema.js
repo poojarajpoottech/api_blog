@@ -27,7 +27,6 @@ const PostSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "author",
     },
-    tags: [{ type: String }],
     body: {
       type: String,
       required: true,
