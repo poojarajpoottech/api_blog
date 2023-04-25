@@ -11,20 +11,25 @@ const RecentPost = require("../model/recentpostschema");
 
 //pagination
 router.get("/api/blog/posts", (req, res) => {
-  const page = req.query.page || 1;
-  const perPage = req.query.perPage || 6;
-  Post.find()
-    .sort({ createdAt: -1 })
-    .skip((page - 1) * perPage)
-    .limit(perPage)
-    .then((data) => {
-      Post.countDocuments().then((count) => {
-        res.json({
-          data,
-          totalPages: Math.ceil(count / perPage),
+  try {
+    const page = req.query.page || 1;
+    const perPage = req.query.perPage || 6;
+    Post.find()
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .then((data) => {
+        Post.countDocuments().then((count) => {
+          res.json({
+            data,
+            totalPages: Math.ceil(count / perPage),
+          });
         });
       });
-    });
+  } catch (error) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 router.get("/api/blog/post", async (req, res) => {
@@ -45,11 +50,11 @@ router.get("/api/blog/post", async (req, res) => {
 router.get("/api/blog/posts/recent", async (req, res) => {
   try {
     // const { title } = req.query;
-    const recentpost = await RecentPost.find().sort({ createdAt: -1 }).limit(2);
+    const recentpost = await RecentPost.find().sort({ createdAt: -1 }).limit(4);
     if (recentpost) {
       res.json(recentpost);
     } else {
-      res.status(404).json({ message: "Post not found" });
+      res.status(500).json({ message: "Server error" });
     }
   } catch (error) {
     console.log(error);
