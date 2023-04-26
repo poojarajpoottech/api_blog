@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const authenticate = require("../middleware/authenticate");
+const Authenticate = require("../middleware/authenticate");
 
 //db connection here
 require("../db/conn");
@@ -37,18 +37,17 @@ router.post("/api/login", async (req, res) => {
       return res.status(400).json({ error: "Plz Filled the data" });
     }
     const userLogin = await User.findOne({ email: email });
+    // Check if user exists and verify password
     if (userLogin) {
       const isMatch = await bcrypt.compare(password, userLogin.password);
-
       if (!isMatch) {
         res.status(400).json({ error: "Invalid Credientials " });
       } else {
         token = await userLogin.generateAuthToken();
         res.cookie("jwtoken", token, {
-          expires: new Date(Date.now() + 60 * 60 * 24 * 7),
+          expires: new Date(Date.now() + 25850000),
           httpOnly: true,
         });
-
         res.json({ id: userLogin._id, email });
       }
     } else {
@@ -59,18 +58,18 @@ router.post("/api/login", async (req, res) => {
   }
 });
 
-// uthenticate about
-router.get("/api/about", authenticate, (req, res) => {
+// Uthenticate About
+router.get("/api/about", Authenticate, (req, res) => {
   res.send(req.rootUser);
 });
 //get contactus data for home page or contactus form
-router.get("/api/getdata", authenticate, (req, res) => {
+router.get("/api/getdata", Authenticate, (req, res) => {
   res.send(req.rootUser);
 });
 
-//contactus form
+//protected contactus form
 
-router.post("/api/contact-us", authenticate, async (req, res) => {
+router.post("/api/contact-us", Authenticate, async (req, res) => {
   try {
     const { name, email, phone, message } = req.body;
     if (!name || !email || !phone || !message) {
@@ -95,7 +94,7 @@ router.post("/api/contact-us", authenticate, async (req, res) => {
 // user logout
 router.get("/api/logout", (req, res) => {
   res.clearCookie("jwtoken", { path: "/" });
-  res.status(200).send("user logout successfully");
+  res.status(200).send("User Loggedout!");
 });
 
 module.exports = router;
