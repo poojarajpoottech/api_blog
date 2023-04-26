@@ -18,7 +18,7 @@ require("./db/conn");
 app.use(express.json());
 
 const corsOptions = {
-  origin: "http://localhost:3031",
+  origin: "https://designwithsatya.vercel.app/",
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
