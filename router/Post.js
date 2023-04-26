@@ -9,12 +9,16 @@ require("../db/conn");
 const Post = require("../model/postschema");
 const RecentPost = require("../model/recentpostschema");
 
-//pagination
+//we are checking here is admin or not
+const Authenticate = require("../middleware/authenticate");
+
+//GetAllPost
 router.get("/api/blog/posts", (req, res) => {
   try {
     const page = req.query.page || 1;
     const perPage = req.query.perPage || 6;
     Post.find()
+      .populate("author")
       .sort({ createdAt: -1 })
       .skip((page - 1) * perPage)
       .limit(perPage)
@@ -32,6 +36,7 @@ router.get("/api/blog/posts", (req, res) => {
   }
 });
 
+//GetPostByTitle
 router.get("/api/blog/post", async (req, res) => {
   try {
     const { title } = req.query;
@@ -46,7 +51,7 @@ router.get("/api/blog/post", async (req, res) => {
   }
 });
 
-//recent post
+//RecentPost
 router.get("/api/blog/posts/recent", async (req, res) => {
   try {
     // const { title } = req.query;
@@ -58,6 +63,25 @@ router.get("/api/blog/posts/recent", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+  }
+});
+
+// Route for creating a new post that can only be accessed by an admin user
+router.post("/api/blog/posts", Authenticate, async (req, res) => {
+  try {
+    const { title, content, author } = req.body;
+
+    const post = await Post.create({
+      title,
+      content,
+      author,
+      isPublished: true,
+    });
+
+    res.json(post);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

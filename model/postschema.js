@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
 
 const PostSchema = new mongoose.Schema(
   {
@@ -15,18 +14,12 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      required: true,
-    },
     view: {
       type: Number,
       required: true,
     },
-    author: {
-      type: Schema.Types.ObjectId,
-      ref: "author",
-    },
+    createdAt: { type: Date, default: Date.now },
+
     body: {
       type: String,
       required: true,
