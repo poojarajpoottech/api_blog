@@ -49,12 +49,24 @@ router.post("/api/login", async (req, res) => {
           httpOnly: true,
         });
         res.json({ id: userLogin._id, email });
+        res.json(token);
       }
     } else {
       res.status(400).json({ error: "Invalid Credientials " });
     }
   } catch (err) {
     console.log(err);
+  }
+});
+
+//get token
+router.get("/api/gettoken", (req, res) => {
+  try {
+    const token = req.cookies.jwtoken;
+    res.json({ token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
