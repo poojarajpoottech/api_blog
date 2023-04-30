@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
-const Authenticate = require("../middleware/authenticate");
+const Authenticate = require("../middleware/authMiddleware");
 
 //db connection here
 require("../db/conn");
@@ -44,7 +44,7 @@ router.post("/api/login", async (req, res) => {
         res.status(400).json({ error: "Invalid Credientials " });
       } else {
         token = await userLogin.generateAuthToken();
-        res.cookie("jwtoken", token, {
+        res.cookie("jwtToken", token, {
           expires: new Date(Date.now() + 25850000),
           httpOnly: true,
           path: "/",

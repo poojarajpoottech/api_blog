@@ -10,7 +10,7 @@ const Post = require("../model/postschema");
 const RecentPost = require("../model/recentpostschema");
 
 //we are checking here is admin or not
-const Authenticate = require("../middleware/authenticate");
+const Authenticate = require("../middleware/authMiddleware");
 
 //GetAllPost
 router.get("/api/blog/posts", (req, res) => {
