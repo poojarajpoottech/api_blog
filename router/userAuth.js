@@ -44,12 +44,11 @@ router.post("/api/login", async (req, res) => {
         res.status(400).json({ error: "Invalid Credientials " });
       } else {
         token = await userLogin.generateAuthToken();
-
-        res.Cookie("jwtoken", token, {
+        res.cookie("jwtoken", token, {
           expires: new Date(Date.now() + 25850000),
           httpOnly: true,
+          path: "/",
         });
-        res.setHeader("Set-Cookie", `mycookie=${token}; Path=/; HttpOnly`);
         res.json({ id: userLogin._id, email });
         res.json(token);
       }
