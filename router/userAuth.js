@@ -45,12 +45,12 @@ router.post("/api/login", async (req, res) => {
         res.status(400).json({ error: "Invalid Credientials " });
       } else {
         token = await userLogin.generateAuthToken();
-        res.cookie("jwtToken", token, {
-          expires: new Date(Date.now() + 25850000),
-          httpOnly: true,
-          secure: true,
-          sameSite: "none",
-        });
+        res.setHeader(
+          "Set-Cookie",
+          `jwtToken=${token}; Expires=${new Date(
+            Date.now() + 25850000
+          ).toUTCString()}; HttpOnly; Secure; SameSite=None;`
+        );
         res.json(token);
       }
     } else {
