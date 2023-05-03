@@ -50,7 +50,7 @@ router.post("/api/login", async (req, res) => {
           httpOnly: true,
           sameSite: "none",
           expires: new Date(Date.now() + 25850000),
-          domain: "https://designwithsatya.vercel.app",
+          domain: "designwithsatya.vercel.app",
           path: "/",
         });
         res.json(token);
