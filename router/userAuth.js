@@ -50,8 +50,6 @@ router.post("/api/login", async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          domain: "https://designwithsatya.vercel.app",
-          path: "/",
         });
         res.json(token);
       }

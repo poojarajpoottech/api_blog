@@ -19,10 +19,14 @@ app.use(express.json());
 
 const corsOptions = {
   origin: ["https://designwithsatya.vercel.app", "http://localhost:3031"],
+  credentials: true,
   optionSuccessStatus: 200,
   methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
-  // allowedHeaders: ["Content-Type", "Authorization"],
-  // credentials: true,
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Access-Control-Allow-Origin",
+  ],
 };
 app.use(cors(corsOptions));
 
