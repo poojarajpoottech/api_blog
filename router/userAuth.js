@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const Authenticate = require("../middleware/authMiddleware");
+const requireAdmin = require("../middleware/isAdmin");
 
 //db connection here
 require("../db/conn");
@@ -45,11 +46,13 @@ router.post("/api/login", async (req, res) => {
       } else {
         token = await userLogin.generateAuthToken();
         res.cookie("jwtToken", token, {
-          expires: new Date(Date.now() + 25850000),
+          secure: true,
           httpOnly: true,
+          sameSite: "none",
+          expires: new Date(Date.now() + 25850000),
+          domain: "https://designwithsatya.vercel.app",
           path: "/",
         });
-        res.json({ id: userLogin._id, email });
         res.json(token);
       }
     } else {
@@ -72,7 +75,7 @@ router.get("/api/gettoken", (req, res) => {
 });
 
 // Uthenticate About
-router.get("/api/about", Authenticate, (req, res) => {
+router.get("/api/about", Authenticate, requireAdmin, (req, res) => {
   res.send(req.rootUser);
 });
 //get contactus data for home page or contactus form

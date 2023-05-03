@@ -1,9 +1,9 @@
-function isAdmin(req, res, next) {
-  if (req.user && req.user.isAdmin) {
+function requireAdmin(req, res, next) {
+  if (req.rootUser && req.rootUser.isAdmin) {
     next();
   } else {
-    res.render("error", {
-      message: "You are not authorized to access this page",
-    });
+    res.status(401).send("Unauthorized Access!");
   }
 }
+
+module.exports = requireAdmin;
