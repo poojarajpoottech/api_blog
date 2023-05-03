@@ -47,12 +47,12 @@ router.post("/api/login", async (req, res) => {
         token = await userLogin.generateAuthToken();
 
         res.cookie("jwtToken", token, {
-          // secure: true,
+          secure: true,
           httpOnly: true,
-          // sameSite: "lax",
+          sameSite: "none",
           expires: new Date(Date.now() + 25850000),
-          // domain: "designwithsatya.vercel.app",
-          // path: "/",
+          domain: "designwithsatya.vercel.app",
+          path: "/",
         });
         res.json(token);
       }
