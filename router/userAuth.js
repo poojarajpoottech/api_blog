@@ -46,8 +46,8 @@ router.post("/api/login", async (req, res) => {
       } else {
         token = await userLogin.generateAuthToken();
         res.cookie("jwtToken", token, {
-          secure: true,
-          httpOnly: true,
+          // secure: true,
+          // httpOnly: true,
           sameSite: "none",
           expires: new Date(Date.now() + 25850000),
           domain: "designwithsatya.vercel.app",
@@ -60,17 +60,6 @@ router.post("/api/login", async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-  }
-});
-
-//get token
-router.get("/api/gettoken", (req, res) => {
-  try {
-    const token = req.cookies.jwtoken;
-    res.json({ token });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal server error" });
   }
 });
 
