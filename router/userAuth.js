@@ -53,7 +53,6 @@ router.post("/api/login", async (req, res) => {
           domain: "https://designwithsatya.vercel.app",
           path: "/",
         });
-        res.json({ id: userLogin._id, email });
         res.json(token);
       }
     } else {
