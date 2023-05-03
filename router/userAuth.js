@@ -67,7 +67,7 @@ router.post("/api/login", async (req, res) => {
 router.get("/api/gettoken", (req, res) => {
   try {
     const token = req.cookies.jwtToken;
-    res.json({ token });
+    res.json(token);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
