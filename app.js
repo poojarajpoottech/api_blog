@@ -21,8 +21,8 @@ const corsOptions = {
   origin: ["https://designwithsatya.vercel.app", "http://localhost:3031"],
   optionSuccessStatus: 200,
   methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
+  // allowedHeaders: ["Content-Type", "Authorization"],
+  // credentials: true,
 };
 app.use(cors(corsOptions));
 

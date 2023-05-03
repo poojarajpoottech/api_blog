@@ -45,13 +45,14 @@ router.post("/api/login", async (req, res) => {
         res.status(400).json({ error: "Invalid Credientials " });
       } else {
         token = await userLogin.generateAuthToken();
+
         res.cookie("jwtToken", token, {
-          secure: true,
+          // secure: true,
           httpOnly: true,
-          sameSite: "lax",
+          // sameSite: "lax",
           expires: new Date(Date.now() + 25850000),
-          domain: "designwithsatya.vercel.app",
-          path: "/",
+          // domain: "designwithsatya.vercel.app",
+          // path: "/",
         });
         res.json(token);
       }
@@ -98,7 +99,7 @@ router.post("/api/contact-us", Authenticate, async (req, res) => {
 
 // user logout
 router.get("/api/logout", (req, res) => {
-  res.clearCookie("jwtoken", { path: "/" });
+  res.clearCookie("jwtToken", { path: "/" });
   res.status(200).send("User Loggedout!");
 });
 
