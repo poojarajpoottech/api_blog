@@ -93,7 +93,7 @@ router.post("/api/contact-us", Authenticate, async (req, res) => {
     if (!name || !email || !phone || !message) {
       return res.json({ error: "please filled all field" });
     }
-    const UserContact = await User.findOne({ _id: req.userID });
+    const UserContact = await User.findOne({ userId: req.userID });
     if (UserContact) {
       const userMessage = await UserContact.addMessage(
         name,
