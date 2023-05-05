@@ -82,7 +82,7 @@ router.get("/api/about", Authenticate, (req, res) => {
 
 //get contactus data for home page or contactus form
 router.get("/api/getdata", Authenticate, requireAdmin, (req, res) => {
-  res.send(req.rootUser);
+  res.send(req.user);
 });
 
 //protected contactus form
