@@ -74,8 +74,12 @@ router.get("/api/gettoken", (req, res) => {
 
 // Uthenticate About
 router.get("/api/about", Authenticate, (req, res) => {
-  res.send(req.rootUser);
+  if (!req.user) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  res.send(req.user);
 });
+
 //get contactus data for home page or contactus form
 router.get("/api/getdata", Authenticate, requireAdmin, (req, res) => {
   res.send(req.rootUser);
