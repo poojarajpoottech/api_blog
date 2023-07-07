@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const postSchema = new mongoose.Schema(
+const LatestpostSchema = new mongoose.Schema(
   {
     publish: { type: String, required: true },
     metaKeywords: [{ type: String }],
@@ -47,6 +47,6 @@ const postSchema = new mongoose.Schema(
   }
 );
 
-const Posts = mongoose.model("Posts", postSchema);
+const Posts = mongoose.model("latestpost", LatestpostSchema);
 
 module.exports = Posts;

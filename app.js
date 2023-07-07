@@ -2,18 +2,16 @@ const dotenv = require("dotenv");
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const port = process.env.PORT || 5000;
+const port = process.env.BACKEND_PORT || 5000;
 const app = express();
 
 // const User = require("./model/userSchema");
 // const data = require("./utils/data");
-// const Postschema = require("./model/postschema");
+// const Postschema = require("./model/latestposts");
 // const posts = require("./utils/posts");
-// const RecentPostSchema = require("./model/recentpostschema");
-// const recentpost = require("./utils/recentpost");
 
 app.use(cookieParser());
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: ".env" });
 require("./db/conn");
 app.use(express.json());
 
@@ -33,12 +31,10 @@ app.use(cors(corsOptions));
 // seed data here in database
 // async function seedData() {
 //   try {
-//     // await User.deleteMany();
-//     // await User.insertMany(data.users);
-//     // await Postschema.deleteMany();
-//     // await Postschema.insertMany(posts.posts);
-//     await RecentPostSchema.deleteMany();
-//     await RecentPostSchema.insertMany(recentpost.post);
+//     await User.deleteMany();
+//      await User.insertMany(data.users);
+//     await Postschema.deleteMany();
+//     await Postschema.insertMany(posts.posts);
 //     console.log("Data seeded successfully");
 //   } catch (error) {
 //     console.log(error);
@@ -54,7 +50,12 @@ app.get("/", async (req, res) => {
 //user router
 app.use(require("./router/userAuth"));
 app.use(require("./router/Post"));
+app.use(require("./router/latestapipost"));
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`);
+});
+process.on("unhandledRejection", (error) => {
+  console.error("Unhandled Promise Rejection:", error);
+  process.exit(1);
 });
