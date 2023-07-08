@@ -9,44 +9,116 @@ require("../db/conn");
 const Post = require("../model/postschema");
 const baseRoute = "/api/post";
 
+// Endpoint for creating a new post
 router.post(`${baseRoute}/createpost`, async (req, res) => {
   try {
-    const postData = req.body.post;
-    const newPost = await Post.create(postData);
-    res.status(201).json({ success: true, post: newPost });
+    const {
+      title,
+      description,
+      content,
+      coverUrl,
+      tags,
+      metaKeywords,
+      metaTitle,
+      metaDescription,
+    } = req.body;
+    if (
+      !title ||
+      !description ||
+      !content ||
+      !coverUrl ||
+      tags.length < 2 ||
+      metaKeywords.length < 1 ||
+      !metaTitle ||
+      !metaDescription
+    ) {
+      return res.status(400).json({ message: "Plz filled the field properly" });
+    }
+    const ExistPost = await Post.findOne({ title: title });
+    if (ExistPost) {
+      return res.status(422).json({ error: "This Post already Exist" });
+    } else {
+      const newPost = new Post({
+        title,
+        description,
+        content,
+        coverUrl,
+        tags,
+        metaKeywords,
+        metaTitle,
+        metaDescription,
+      });
+      await newPost.save();
+
+      res
+        .status(201)
+        .json({ message: "Post created successfully", Post: newPost });
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: "Server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-//get post
-router.get(`${baseRoute}/list`, async (req, res) => {
+// Endpoint for updating an existing post
+router.put(`${baseRoute}/:postId`, async (req, res) => {
   try {
-    const posts = await Post.find().lean();
-    res.status(200).json({ posts });
+    const { postId } = req.params;
+    const {
+      title,
+      description,
+      content,
+      coverUrl,
+      tags,
+      metaKeywords,
+      metaTitle,
+      metaDescription,
+    } = req.body;
+
+    if (
+      !title ||
+      !description ||
+      !content ||
+      !coverUrl ||
+      tags.length < 2 ||
+      metaKeywords.length < 1 ||
+      !metaTitle ||
+      !metaDescription
+    ) {
+      return res.status(400).json({ message: "Invalid data" });
+    }
+
+    const updatedPost = {
+      title,
+      description,
+      content,
+      coverUrl,
+      tags,
+      metaKeywords,
+      metaTitle,
+      metaDescription,
+    };
+
+    const updatedPostData = await Post.findOneAndUpdate(
+      { _id: postId },
+      updatedPost,
+      { new: true }
+    );
+
+    if (!updatedPostData) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Post updated successfully", post: updatedPostData });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
+
 // Get post details by title
-
-// router.get("/api/post/details", async (req, res) => {
-//   const { title } = req.query;
-//   try {
-//     const post = await Post.findOne({ title }).exec();
-
-//     if (post) {
-//       res.json({ post });
-//     } else {
-//       res.status(404).json({ error: "Post not found" });
-//     }
-//   } catch (error) {
-//     console.error("Error retrieving post data:", error);
-//     res.status(500).json({ error: "Failed to retrieve post data" });
-//   }
-// });
 router.get("/api/post/details", async (req, res) => {
   try {
     const post = await Post.findOne().lean();
