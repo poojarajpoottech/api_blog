@@ -31,11 +31,21 @@ router.get(`${baseRoute}/list`, async (req, res) => {
   }
 });
 // Get post details by title
+
+function paramCase(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 router.get("/api/post/details", async (req, res) => {
+  const { title } = req.query;
   try {
-    const { title } = req.query;
-    const formattedTitle = title.replace(/-/g, " ");
+    const formattedTitle = paramCase(title);
     const post = await Post.findOne({ title: formattedTitle }).exec();
+
     if (post) {
       res.json({ post });
     } else {
