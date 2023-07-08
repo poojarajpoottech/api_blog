@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const { paramCase } = require("change-case");
 const bodyParser = require("body-parser");
 const router = express.Router();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,10 +32,11 @@ router.get(`${baseRoute}/list`, async (req, res) => {
   }
 });
 // Get post details by title
-router.get(`${baseRoute}/details`, async (req, res) => {
+router.get("/api/post/details/:title", async (req, res) => {
   try {
-    const { title } = req.query;
-    const post = await Post.findOne({ title }).lean();
+    const { title } = req.params;
+    const formattedTitle = paramCase(title);
+    const post = await Post.findOne({ title: formattedTitle }).lean();
 
     if (post) {
       res.status(200).json({ post });
