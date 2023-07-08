@@ -50,7 +50,11 @@ router.get(`${baseRoute}/list`, async (req, res) => {
 router.get("/api/post/details", async (req, res) => {
   try {
     const post = await Post.findOne().lean();
-    res.json({ post });
+    if (post) {
+      res.json({ post });
+    } else {
+      res.status(404).json({ error: "Post not found" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
