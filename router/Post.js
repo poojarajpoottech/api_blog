@@ -32,9 +32,10 @@ router.get(`${baseRoute}/list`, async (req, res) => {
 });
 // Get post details by title
 router.get("/api/post/details", async (req, res) => {
-  const { title } = req.query;
   try {
-    const post = await Post.findOne({ title: title }).exec();
+    const { title } = req.query;
+    const formattedTitle = title.replace(/-/g, " ");
+    const post = await Post.findOne({ title: formattedTitle }).exec();
     if (post) {
       res.json({ post });
     } else {
