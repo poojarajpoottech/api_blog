@@ -5,11 +5,6 @@ const cookieParser = require("cookie-parser");
 const port = process.env.BACKEND_PORT || 5000;
 const app = express();
 
-// const User = require("./model/userSchema");
-// const data = require("./utils/data");
-// const Postschema = require("./model/latestposts");
-// const posts = require("./utils/posts");
-
 app.use(cookieParser());
 dotenv.config({ path: ".env" });
 require("./db/conn");
@@ -18,7 +13,7 @@ app.use(express.json());
 const corsOptions = {
   origin: ["https://designwithsatya.vercel.app", "http://localhost:3031"],
   credentials: true,
-  optionSuccessStatus: 200,
+  optionsSuccessStatus: 200,
   methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
   allowedHeaders: [
     "Content-Type",
@@ -26,28 +21,11 @@ const corsOptions = {
     "Access-Control-Allow-Origin",
   ],
 };
+
 app.use(cors(corsOptions));
-
-// seed data here in database
-// async function seedData() {
-//   try {
-//     await User.deleteMany();
-//      await User.insertMany(data.users);
-//     await Postschema.deleteMany();
-//     await Postschema.insertMany(posts.posts);
-//     console.log("Data seeded successfully");
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-// seedData();
-
-// ****** SEND API
 app.get("/", async (req, res) => {
   res.send("Production is working");
 });
-
-//user router
 app.use(require("./router/userAuth"));
 app.use(require("./router/Post"));
 app.use(require("./router/latestapipost"));

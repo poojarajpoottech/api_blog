@@ -117,9 +117,18 @@ router.put(`${baseRoute}/:postId`, async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
+//get post
+router.get(`${baseRoute}/list`, async (req, res) => {
+  try {
+    const posts = await Post.find().lean();
+    res.status(200).json({ posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 // Get post details by title
-router.get("/api/post/details", async (req, res) => {
+router.get(`${baseRoute}/details`, async (req, res) => {
   try {
     const post = await Post.findOne().lean();
     if (post) {
