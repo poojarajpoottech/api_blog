@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const router = express.Router();
-// const Joi = require("joi");
+const { paramCase } = require("change-case");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //db connection
@@ -26,6 +26,24 @@ router.get(`${baseRoute}/list`, async (req, res) => {
   try {
     const posts = await Post.find().lean();
     res.status(200).json({ posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+// Get post details by title
+router.get(`${baseRoute}/details/:title`, async (req, res) => {
+  try {
+    const { title } = req.params;
+    const formattedTitle = paramCase(title);
+
+    const post = await Post.findOne({ title: formattedTitle }).lean();
+
+    if (post) {
+      res.status(200).json({ post });
+    } else {
+      res.status(404).json({ message: "Post not found" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
