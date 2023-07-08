@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const router = express.Router();
-const { paramCase } = require("change-case");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //db connection
@@ -12,7 +11,7 @@ const baseRoute = "/api/post";
 
 router.post(`${baseRoute}/createpost`, async (req, res) => {
   try {
-    const postData = req.body.posts;
+    const postData = req.body.post;
     const newPost = await Post.create(postData);
     res.status(201).json({ success: true, post: newPost });
   } catch (error) {
@@ -32,12 +31,10 @@ router.get(`${baseRoute}/list`, async (req, res) => {
   }
 });
 // Get post details by title
-router.get(`${baseRoute}/details/:title`, async (req, res) => {
+router.get(`${baseRoute}/details`, async (req, res) => {
   try {
-    const { title } = req.params;
-    const formattedTitle = paramCase(title);
-
-    const post = await Post.findOne({ title: formattedTitle }).lean();
+    const { title } = req.query;
+    const post = await Post.findOne({ title }).lean();
 
     if (post) {
       res.status(200).json({ post });
