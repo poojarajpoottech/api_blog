@@ -4,25 +4,37 @@ const router = express.Router();
 //db connection
 require("../db/conn");
 const LatestPost = require("../model/latestposts");
+const baseRoute = "/api/post";
+
+router.post(`${baseRoute}/createlatestpost`, async (req, res) => {
+  try {
+    const postData = req.body.latestPosts;
+    const newPost = await LatestPost.create(postData);
+    res.status(201).json({ success: true, LatestPost: newPost });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Server error" });
+  }
+});
 
 //rest api define
-router.get("/api/blog/latest", async (req, res) => {
+router.get(`${baseRoute}/latest`, async (req, res) => {
   try {
-    const data = await LatestPost.find();
-    res.json(data);
+    const latestPosts = await LatestPost.find().lean();
+    res.json({ latestPosts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-router.get("/api/blog/search/:title", async (req, res) => {
+router.get(`${baseRoute}/search/:title`, async (req, res) => {
   try {
     const title = req.params.title;
-    const post = await LatestPost.findOne({ title });
+    const results = await LatestPost.findOne({ title }).lean();
 
-    if (post) {
-      res.json(post);
+    if (results) {
+      res.json({ results });
     } else {
       res.status(404).json({ message: "Post not found" });
     }

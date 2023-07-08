@@ -1,0 +1,89 @@
+{
+"posts": [
+{
+"publish": "draft",
+"metaKeywords": [
+"Fitness",
+"Nature",
+"Business"
+],
+"content": "\n\n<h1>Heading H1</h1><br/><br/>\n\n<h2>Heading H2</h2><br/><br/>",
+"comments": [
+{
+"name": "Jayvion Simon",
+"avatarUrl": "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_1.jpg",
+"message": "She eagerly opened the gift, her eyes sparkling with excitement.",
+"postedAt": "2023-07-07T05:26:44.528Z",
+"users": [
+{
+
+"name": "Jayvion Simon",
+"avatarUrl": "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_1.jpg"
+}
+
+],
+"replyComment": [
+{
+
+"userId": "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
+"message": "The old oak tree stood tall and majestic, its branches swaying gently in the breeze.",
+"postedAt": "2023-07-06T04:26:44.528Z"
+}
+]
+},
+{
+
+"name": "Reece Chung",
+"avatarUrl": "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_5.jpg",
+"message": "He carefully crafted a beautiful sculpture out of clay, his hands skillfully shaping the intricate details.",
+"postedAt": "2023-07-03T01:26:44.528Z",
+"users": [
+{
+
+"name": "Lainey Davidson",
+"avatarUrl": "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_6.jpg"
+}
+],
+"replyComment": [
+{
+
+"userId": "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b6",
+"message": "The concert was a mesmerizing experience, with the music filling the venue and the crowd cheering in delight.",
+"postedAt": "2023-07-02T00:26:44.528Z"
+}
+]
+},
+{
+
+"name": "Chase Day",
+"avatarUrl": "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_9.jpg",
+"message": "She gazed up at the night sky, marveling at the twinkling stars that dotted the darkness.",
+"postedAt": "2023-06-28T21:26:44.528Z",
+"users": [],
+"replyComment": []
+}
+
+],
+"tags": [
+"Technology",
+"Marketing",
+"Design",
+"Photography",
+"Art"
+],
+"metaTitle": "Minimal UI Kit",
+"createdAt": "2023-07-08T06:26:44.528Z",
+"title": "10 Essential Tips for Healthy Living",
+"coverUrl": "https://api-dev-minimal-v510.vercel.app/assets/images/cover/cover_1.jpg",
+"totalViews": 9911,
+"totalShares": 9124,
+"totalComments": 1947,
+"totalFavorites": 6984,
+"metaDescription": "The starting point for your next project with Minimal UI Kit",
+"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ",
+"author": {
+"name": "Jayvion Simon",
+"avatarUrl": "https://api-dev-minimal-v510.vercel.app/assets/images/avatar/avatar_1.jpg"
+}
+
+}]}

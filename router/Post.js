@@ -2,54 +2,30 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const router = express.Router();
-const Joi = require("joi");
+// const Joi = require("joi");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //db connection
 require("../db/conn");
 const Post = require("../model/postschema");
-const baseRoute = "/api/blog";
+const baseRoute = "/api/post";
 
-const postSchema = Joi.object({
-  publish: Joi.boolean().required(),
-  metaKeywords: Joi.string().required(),
-  content: Joi.string().required(),
-  comments: Joi.array().items(Joi.string()),
-  tags: Joi.array().items(Joi.string()),
-  metaTitle: Joi.string().required(),
-  createdAt: Joi.date().required(),
-  title: Joi.string().required(),
-  coverUrl: Joi.string().required(),
-  totalViews: Joi.number().integer().min(0).required(),
-  totalShares: Joi.number().integer().min(0).required(),
-  totalComments: Joi.number().integer().min(0).required(),
-  totalFavorites: Joi.number().integer().min(0).required(),
-  metaDescription: Joi.string().required(),
-  description: Joi.string().required(),
-  author: Joi.string().required(),
-});
-// create a new post
 router.post(`${baseRoute}/createpost`, async (req, res) => {
   try {
-    const { error, value } = postSchema.validate(req.body);
-    if (error) {
-      return res
-        .status(400)
-        .json({ message: "Validation error", error: error.details });
-    }
-
-    const savedPost = await Post.create(value);
-    res.status(201).json(savedPost);
+    const postData = req.body.posts;
+    const newPost = await Post.create(postData);
+    res.status(201).json({ success: true, post: newPost });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to create post" });
+    res.status(500).json({ success: false, error: "Server error" });
   }
 });
+
 //get post
-router.get(`${baseRoute}/post`, async (req, res) => {
+router.get(`${baseRoute}/list`, async (req, res) => {
   try {
-    const posts = await Post.find();
-    res.status(200).json(posts);
+    const posts = await Post.find().lean();
+    res.status(200).json({ posts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -57,13 +33,13 @@ router.get(`${baseRoute}/post`, async (req, res) => {
 });
 
 //GetPostByTitle
-router.get(`${baseRoute}/post/:title`, async (req, res) => {
+router.get(`${baseRoute}/search/:title`, async (req, res) => {
   try {
     const title = req.params.title;
-    const post = await Post.findOne({ title });
+    const results = await Post.findOne({ title }).lean();
 
-    if (post) {
-      res.json(post);
+    if (results) {
+      res.json({ results });
     } else {
       res.status(404).json({ message: "Post not found" });
     }
@@ -75,7 +51,7 @@ router.get(`${baseRoute}/post/:title`, async (req, res) => {
 
 //delete the post based on the id
 
-router.delete(`${baseRoute}/deletepost/:id`, async (req, res) => {
+router.delete(`${baseRoute}/delete/:id`, async (req, res) => {
   try {
     const postId = req.params.id;
     const deletedPost = await Post.findByIdAndDelete(postId);
