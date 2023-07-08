@@ -32,22 +32,30 @@ router.get(`${baseRoute}/list`, async (req, res) => {
 });
 // Get post details by title
 
-router.get("/api/post/details", async (req, res) => {
-  const { title } = req.query;
-  try {
-    const post = await Post.findOne({ title }).exec();
+// router.get("/api/post/details", async (req, res) => {
+//   const { title } = req.query;
+//   try {
+//     const post = await Post.findOne({ title }).exec();
 
-    if (post) {
-      res.json({ post });
-    } else {
-      res.status(404).json({ error: "Post not found" });
-    }
+//     if (post) {
+//       res.json({ post });
+//     } else {
+//       res.status(404).json({ error: "Post not found" });
+//     }
+//   } catch (error) {
+//     console.error("Error retrieving post data:", error);
+//     res.status(500).json({ error: "Failed to retrieve post data" });
+//   }
+// });
+router.get("/api/post/details", async (req, res) => {
+  try {
+    const post = await Post.findOne().lean();
+    res.json({ post });
   } catch (error) {
-    console.error("Error retrieving post data:", error);
-    res.status(500).json({ error: "Failed to retrieve post data" });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
-
 //GetPostByTitle
 router.get(`${baseRoute}/search/:title`, async (req, res) => {
   try {
