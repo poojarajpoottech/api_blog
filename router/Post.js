@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const { paramCase } = require("change-case");
 const bodyParser = require("body-parser");
 const router = express.Router();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,20 +31,18 @@ router.get(`${baseRoute}/list`, async (req, res) => {
   }
 });
 // Get post details by title
-router.get("/api/post/details/:title", async (req, res) => {
+router.get("/api/post/details", async (req, res) => {
+  const { title } = req.query;
   try {
-    const { title } = req.params;
-    const formattedTitle = paramCase(title);
-    const post = await Post.findOne({ title: formattedTitle }).lean();
-
+    const post = await Post.findOne({ title: title }).exec();
     if (post) {
-      res.status(200).json({ post });
+      res.json({ post });
     } else {
-      res.status(404).json({ message: "Post not found" });
+      res.status(404).json({ error: "Post not found" });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error retrieving post data:", error);
+    res.status(500).json({ error: "Failed to retrieve post data" });
   }
 });
 
