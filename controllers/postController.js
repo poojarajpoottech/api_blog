@@ -1,18 +1,15 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const router = express.Router();
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//db connection
-require("../db/conn");
 const Post = require("../model/postschema");
-const baseRoute = "/api/post";
+const paramCase = require("../utils/paramCase");
 
-// Endpoint for creating a new post
-router.post(`${baseRoute}/createpost`, async (req, res) => {
+const createPost = async (req, res) => {
   try {
     const {
+      publish,
       title,
       description,
       content,
@@ -23,6 +20,7 @@ router.post(`${baseRoute}/createpost`, async (req, res) => {
       metaDescription,
     } = req.body;
     if (
+      !publish ||
       !title ||
       !description ||
       !content ||
@@ -34,12 +32,13 @@ router.post(`${baseRoute}/createpost`, async (req, res) => {
     ) {
       return res.status(400).json({ message: "Plz filled the field properly" });
     }
-    const ExistPost = await Post.findOne({ title: title });
+    const ExistPost = await Post.findOne({ title: paramCase(title) });
     if (ExistPost) {
       return res.status(422).json({ error: "This Post already Exist" });
     } else {
       const newPost = new Post({
-        title,
+        publish,
+        title: paramCase(title),
         description,
         content,
         coverUrl,
@@ -47,6 +46,8 @@ router.post(`${baseRoute}/createpost`, async (req, res) => {
         metaKeywords,
         metaTitle,
         metaDescription,
+        comments: req.body.comments,
+        author: req.body.author,
       });
       await newPost.save();
 
@@ -58,13 +59,13 @@ router.post(`${baseRoute}/createpost`, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-});
+};
 
-// Endpoint for updating an existing post
-router.put(`${baseRoute}/:postId`, async (req, res) => {
+const updatePost = async (req, res) => {
+  const { postId } = req.params;
   try {
-    const { postId } = req.params;
     const {
+      publish,
       title,
       description,
       content,
@@ -76,6 +77,7 @@ router.put(`${baseRoute}/:postId`, async (req, res) => {
     } = req.body;
 
     if (
+      !publish ||
       !title ||
       !description ||
       !content ||
@@ -89,6 +91,7 @@ router.put(`${baseRoute}/:postId`, async (req, res) => {
     }
 
     const updatedPost = {
+      publish,
       title,
       description,
       content,
@@ -116,9 +119,9 @@ router.put(`${baseRoute}/:postId`, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-});
-//get post
-router.get(`${baseRoute}/list`, async (req, res) => {
+};
+
+const postList = async (req, res) => {
   try {
     const posts = await Post.find().lean();
     res.status(200).json({ posts });
@@ -126,11 +129,12 @@ router.get(`${baseRoute}/list`, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
-});
-// Get post details by title
-router.get(`${baseRoute}/details`, async (req, res) => {
+};
+
+const postDetails = async (req, res) => {
+  let { title } = req.query;
   try {
-    const post = await Post.findOne().lean();
+    const post = await Post.findOne({ title }).lean();
     if (post) {
       res.json({ post });
     } else {
@@ -140,9 +144,9 @@ router.get(`${baseRoute}/details`, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
-});
-//GetPostByTitle
-router.get(`${baseRoute}/search/:title`, async (req, res) => {
+};
+
+const postTitle = async (req, res) => {
   try {
     const title = req.params.title;
     const results = await Post.findOne({ title }).lean();
@@ -156,11 +160,9 @@ router.get(`${baseRoute}/search/:title`, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
-});
+};
 
-//delete the post based on the id
-
-router.delete(`${baseRoute}/delete/:id`, async (req, res) => {
+const deletePost = async (req, res) => {
   try {
     const postId = req.params.id;
     const deletedPost = await Post.findByIdAndDelete(postId);
@@ -172,6 +174,13 @@ router.delete(`${baseRoute}/delete/:id`, async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Failed to delete post" });
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  createPost,
+  updatePost,
+  postList,
+  postDetails,
+  postTitle,
+  deletePost,
+};

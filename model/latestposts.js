@@ -2,44 +2,50 @@ const mongoose = require("mongoose");
 
 const LatestpostSchema = new mongoose.Schema(
   {
-    publish: { type: String, required: true },
-    metaKeywords: [{ type: String }],
+    publish: { type: String },
+    metaKeywords: [{ type: String, required: true }],
     content: { type: String, required: true },
     comments: [
       {
-        name: { type: String, required: true },
-        avatarUrl: { type: String, required: true },
-        message: { type: String, required: true },
-        postedAt: { type: Date, required: true },
+        name: { type: String },
+        avatarUrl: { type: String },
+        message: { type: String },
+        postedAt: { type: Date, default: Date.now },
         users: [
           {
-            name: { type: String, required: true },
-            avatarUrl: { type: String, required: true },
+            name: { type: String },
+            avatarUrl: { type: String },
           },
         ],
         replyComment: [
           {
-            userId: { type: String, required: true },
-            message: { type: String, required: true },
-            postedAt: { type: Date, required: true },
+            userId: { type: String },
+            message: { type: String },
+            postedAt: { type: Date, default: Date.now },
           },
         ],
       },
     ],
-    tags: [{ type: String }],
-    metaTitle: { type: String, required: true },
-    createdAt: { type: Date, required: true },
+    tags: [{ type: String, required: true }],
+    metaTitle: { type: String },
+    createdAt: { type: Date, default: Date.now },
     title: { type: String, required: true },
-    coverUrl: { type: String, required: true },
-    totalViews: { type: Number, required: true },
-    totalShares: { type: Number, required: true },
-    totalComments: { type: Number, required: true },
-    totalFavorites: { type: Number, required: true },
-    metaDescription: { type: String, required: true },
+    coverUrl: {
+      type: {
+        path: { type: String },
+        preview: { type: String },
+      },
+      required: true,
+    },
+    totalViews: { type: Number },
+    totalShares: { type: Number },
+    totalComments: { type: Number },
+    totalFavorites: { type: Number },
+    metaDescription: { type: String },
     description: { type: String, required: true },
     author: {
-      name: { type: String, required: true },
-      avatarUrl: { type: String, required: true },
+      name: { type: String },
+      avatarUrl: { type: String },
     },
   },
   {
