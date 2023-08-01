@@ -12,7 +12,10 @@ require("./db/conn");
 app.use(express.json());
 
 const corsOptions = {
-  origin: ["https://designwithsatya.vercel.app", "http://localhost:3031"],
+  origin: [
+    "https://portfolio-designwithsatya.vercel.app",
+    "http://localhost:3031",
+  ],
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
